@@ -11,6 +11,13 @@ While this might seem a bit extreme, in practice the OS X scheduler (and
 presumably the Linux schedule) handles the large number of processes and
 threads just fine.
 
+Warning for Ubuntu Users
+========================
+
+By default, Ubuntu sets the ```--tollef``` flag in ```/etc/parallel/config```.
+This breaks these scripts in amusing and horrible ways. Remove that line from
+the global configuration if you want to use these scripts. See <a href="https://stackoverflow.com/questions/16448887/gnu-parallel-not-working-at-all/16448888#16448888">GNU parallel not working at all</a> for details.
+
 Example
 =======
 
