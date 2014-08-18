@@ -31,10 +31,10 @@ then
   exit 1
 fi
 
-BZIP2=`type -P pbzip2`
+BZIP2=`type -P lbzip2`
 if [[ -z $BZIP2 ]]
 then
-  echo "pbzip2 was not found. Falling back to bzip2. Consider installing pbzip2 for improved"
+  echo "lbzip2 was not found. Falling back to bzip2. Consider installing lbzip2 for improved"
   echo "performance."
   BZIP2=`type -P bzip2`
 fi

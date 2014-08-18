@@ -4,7 +4,7 @@ Parallel Scripts for MySQL
 These scripts are used to run MySQL dumps and restores in parallel, with one
 job per table. This brings significant performance increases in most dumps and
 restores, especially when SSDs are used. By default, jobs will be spawned for
-each concurrent thread that the system can run. As well, pbzip2 will be used,
+each concurrent thread that the system can run. As well, lbzip2 will be used,
 as with bzip2 any dumps or restores where a small number of tables contain the
 majority of the data will be blocked by a single bzip2 process on a CPU core.
 While this might seem a bit extreme, in practice the OS X scheduler (and
