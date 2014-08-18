@@ -45,7 +45,11 @@ echo -n "Please enter your mysql password for $USER: "
 read -s PASS
 echo ""
 
-time ls -S *.sql.bz2 | $PARALLEL -I, echo "Importing table ,." \&\& $BZIP2 -kcd , \| mysql -u $USER -h$HOST -P$PORT -p"'$PASS'" $DATABASE
+if [ -z "$PASS" ]
+then
+  time ls -S *.sql.bz2 | $PARALLEL -I, echo "Importing table ,." \&\& $BZIP2 -kcd , \| mysql -u $USER -h$HOST -P$PORT $DATABASE
+else
+  time ls -S *.sql.bz2 | $PARALLEL -I, echo "Importing table ,." \&\& $BZIP2 -kcd , \| mysql -u $USER -h$HOST -P$PORT -p"'$PASS'" $DATABASE
+fi
 
 cd -
-

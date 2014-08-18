@@ -43,7 +43,12 @@ read -s PASS
 echo ""
 
 # Fetch all of the tables in the database.
-TABLES=`mysql --batch --skip-column-names -u $USER --password="$PASS" -h$HOST -P$PORT -e 'SHOW TABLES;' $DATABASE`
+if [ -z "$PASS" ]
+then
+  TABLES=`mysql --batch --skip-column-names -u $USER -h$HOST -P$PORT -e 'SHOW TABLES;' $DATABASE`
+else
+  TABLES=`mysql --batch --skip-column-names -u $USER --password="$PASS" -h$HOST -P$PORT -e 'SHOW TABLES;' $DATABASE`
+fi
 
 if [[ -z $TABLES ]]
 then
@@ -57,6 +62,11 @@ DESTINATION="$DATABASE-$DATE"
 mkdir -p "$DESTINATION"
 
 # Run one job for each table we are dumping.
-time echo $TABLES |
-$PARALLEL -d ' ' --trim=rl -I ,  echo "Dumping table ,." \&\& mysqldump -C -u$USER -p"'$PASS'" -h$HOST -P$PORT --skip-lock-tables --add-drop-table $DATABASE  , \| $BZIP2 \> $DESTINATION/,.sql.bz2
-
+if [ -z "$PASS" ]
+then
+  time echo $TABLES |
+  $PARALLEL -d ' ' --trim=rl -I ,  echo "Dumping table ,." \&\& mysqldump -C -u$USER -h$HOST -P$PORT --skip-lock-tables --add-drop-table $DATABASE  , \| $BZIP2 \> $DESTINATION/,.sql.bz2
+else
+  time echo $TABLES |
+  $PARALLEL -d ' ' --trim=rl -I ,  echo "Dumping table ,." \&\& mysqldump -C -u$USER -p"'$PASS'" -h$HOST -P$PORT --skip-lock-tables --add-drop-table $DATABASE  , \| $BZIP2 \> $DESTINATION/,.sql.bz2
+fi
