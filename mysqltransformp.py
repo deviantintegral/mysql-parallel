@@ -17,21 +17,25 @@ def main():
     os.makedirs(arguments.destination)
   try:
     file_object = open(arguments.sql_dump, 'r')
-    sql_buffer = tablename = filename = ''
+    sql_buffer = tablename = filename = table_header = ''
+    header_found = False
     # Read the input file line by line.
     for line in file_object:
       # Detect if this is a new table.
       if _is_new_sql_table(line):
+        header_found = True
         if len(sql_buffer) and len(filename):
-          _save_table(sql_buffer, filename)
+          _save_table(table_header + sql_buffer, filename)
           print 'Saved: ' + tablename
           sql_buffer = ''
         tablename = _get_tablename(line)
         print 'Detected table: ' + tablename
         filename = arguments.destination + '/' + tablename + '.sql'
+      elif not header_found:
+        table_header += line
       sql_buffer += line
     print 'Saving: ' + filename
-    _save_table(sql_buffer, filename)
+    _save_table(table_header + sql_buffer, filename)
   finally:
     file_object.close()
 
@@ -42,7 +46,6 @@ def _get_tablename(line):
   return re.search('^-- Table structure for table `([^ ]*)`.*', line).group(1)
 
 def _save_table(sql_buffer, filename):
-  sql_buffer += '--\n'
   file_object = bz2.BZ2File(filename + '.bz2', 'w')
   file_object.write(sql_buffer)
   file_object.close()
