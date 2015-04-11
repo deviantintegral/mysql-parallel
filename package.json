@@ -1,0 +1,25 @@
+{
+  "name": "mysql-parallel",
+  "version": "1.0.0",
+  "description": " A set of scripts and tools to speed up MySQL dumps and restores by running them in parallel.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deviantintegral/mysql-parallel.git"
+  },
+  "keywords": [
+    "mysql",
+    "database"
+  ],
+  "author": {
+    "name" : "Andrew Berry",
+    "email" : "deviantintegral@gmail.com"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/deviantintegral/mysql-parallel/issues"
+  },
+  "homepage": "https://github.com/deviantintegral/mysql-parallel"
+}
